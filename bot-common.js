@@ -99,6 +99,7 @@ function tapMiddle(region, time = 150000, finger = 1) {
 
 // reads text in the region. if it times out (5s) or errors, will return empty string
 // some words that don't work: EXT
+// sometimes multiple words get reordered like "Lv. Auto-Regen L" instead of "Auto-Region Lv. 1"
 function readText(region, minHeight = 0.5, level = 1) {
     const options = {
         region: region,
@@ -115,7 +116,6 @@ function readText(region, minHeight = 0.5, level = 1) {
             text = "";
             alert(error)
         } else {
-            //alert(`${JSON.stringify(result, null, '    ')}`)
             if(result.length >= 1) {
                 text = result[0].text;
             } else {
