@@ -22,8 +22,9 @@ function sleep(seconds) {
 }
 
 // swipe from (x,y) to (newx,newy)
+// if remain = true, don't lift up the finger at the end
 // this took a lot of trial and error
-function swipe(x, y, newx, newy, finger = 1) {
+function swipe(x, y, newx, newy, finger = 1, remain = false, delayInSeconds = 0.1) {
     
     touchDown(finger, x, y);
     let step = 15; // how many intermediate places to move the "finger"
@@ -36,8 +37,10 @@ function swipe(x, y, newx, newy, finger = 1) {
         touchMove(finger, stepx, stepy);
 		usleep(5000);
     }
-    touchUp(finger, newx, newy);
-    usleep(100000);
+    if(!remain) {
+        touchUp(finger, newx, newy);
+    }
+    sleep(delayInSeconds);
 }
 
 function areColorsPresentInRegion(colors, region) {
