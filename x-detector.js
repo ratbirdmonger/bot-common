@@ -269,9 +269,23 @@ function findXButton(baseMaps) {
     return result;
 }
 
+function fastGrayscale(pixel) {
+    return (((pixel & 0xFF0000) >>> 16) + ((pixel & 0x00FF00) >>> 8) + (pixel & 0x0000FF))*COLOR_LEVELS / 765;
+}
+
+// pixel is an integer of the form 0xABCDEF
+function grayScale(pixel) {
+    var rgb = intToRgb(pixel);
+
+    // add the RGB values and divide by 765 to get a brightness between 0 and 1. 
+    // Then scale it by COLOR_LEVELS
+    // 765 is 255*3 and is the maximum RGB value we can have
+    return Math.round((rgb["red"] + rgb["green"] + rgb["blue"])*COLOR_LEVELS / (765));
+}
+
 // generate a base map for a part of the screen
-// base map is the original converted to black/white and "rounded" to a value between 0 and COLOR_LEVELS
-function getBaseMapForRegion(region) {
+// use an optional mapFunction that is passed the pixel int value, returns a gray scale map otherwise
+function getBaseMapForRegion(region, mapFunction = fastGrayscale) {
     var baseMap = initializeArray(region.width, region.height);
     var getColorsInput = new Array(region.height * region.width);
 
@@ -285,9 +299,7 @@ function getBaseMapForRegion(region) {
     
     for(let i = 0; i < region.width; i++) {
         for(let j = 0; j < region.height; j++) {
-            var rgb = intToRgb(result[i * region.width + j]);
-            const maxVal = 255*3;
-            baseMap[i][j] = Math.round((rgb["red"] + rgb["green"] + rgb["blue"])*COLOR_LEVELS / (maxVal));
+            baseMap[i][j] = mapFunction(result[i * region.width + j]);
         }
     }
 

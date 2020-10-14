@@ -84,7 +84,7 @@ function poll(pollFunction, timeoutInSeconds = 5, intervalInSeconds = 1, throwOn
     }
 
     if(throwOnTimeoutMessage != null && !result) {
-        alert("${throwOnTimeoutMessage} timed out, aborting");
+        alert(`${throwOnTimeoutMessage} timed out`);
         at.stop();
     }
     return result;
