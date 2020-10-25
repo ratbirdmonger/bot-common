@@ -270,7 +270,7 @@ function findXButton(baseMaps) {
 }
 
 function fastGrayscale(pixel) {
-    return (((pixel & 0xFF0000) >>> 16) + ((pixel & 0x00FF00) >>> 8) + (pixel & 0x0000FF))*COLOR_LEVELS / 765;
+    return Math.round((((pixel & 0xFF0000) >>> 16) + ((pixel & 0x00FF00) >>> 8) + (pixel & 0x0000FF))*COLOR_LEVELS / 765);;
 }
 
 // pixel is an integer of the form 0xABCDEF
