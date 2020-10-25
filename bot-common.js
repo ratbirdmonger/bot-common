@@ -132,9 +132,17 @@ function readText(region, minHeight = 0.5, level = 1) {
     return text;
 }
 
+function debug(message) {
+    if(global.debugEnabled) {
+        console.log(`${message}`);
+    }
+}
+
 module.exports = {
     // basic gestures
     swipe, sleep, tap, tapMiddle,
     // color & text recognition, polling
-    readText, areColorsPresentInRegion, poll
+    readText, areColorsPresentInRegion, poll,
+    // debug
+    debug
 }
