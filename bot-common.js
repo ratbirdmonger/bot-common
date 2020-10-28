@@ -54,6 +54,16 @@ function areColorsPresentInRegion(colors, region) {
     }
 }
 
+function findColorsInRegion(colors, region) {
+    var options = { colors: colors, region: region};
+    var [result, error] = at.findColors(options);
+
+    if(result.length > 0) {
+        return result[0];
+    } else {
+        return null;
+    }
+}
 
 // execute the provided function for the specified amount of time
 // returns true if the function evaluated to true, false otherwise (i.e. the timeout was hit)
@@ -142,7 +152,7 @@ module.exports = {
     // basic gestures
     swipe, sleep, tap, tapMiddle,
     // color & text recognition, polling
-    readText, areColorsPresentInRegion, poll,
+    readText, areColorsPresentInRegion, poll, findColorsInRegion,
     // debug
     debug
 }
