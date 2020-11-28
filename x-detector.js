@@ -7,13 +7,14 @@ const {
     readText, areColorsPresentInRegion, poll
 } = require(`${at.rootDir()}/bot-common/bot-common`);
 
-const COLOR_LEVELS = 16; // how many color levels to "round" the image to. default 16
-const COLOR_TOLERANCE = 1; // when looking for lines, we can include levels +/- COLOR_TOLERANCE. default 0
+const COLOR_LEVELS = 32; // how many color levels to "round" the image to. default 32
+const COLOR_TOLERANCE = 1; // when looking for lines, we can include levels +/- COLOR_TOLERANCE. default 1
 const DIFF_DISTANCE = 1; // how far to search to find different colors for the same pixel on two maps. default 1
 const SLOPE_DIFF_TOLERANCE = 1; // how different the pos/neg slopes can be. default 1
 const DIFF_THRESHOLD = 1; // don't consider colors as different if they differ by less than this. default 1
 const INTERSECT_DISTANCE = 6; // how far to look for intersections for a pixel. default 6
 const CLUSTER_RADIUS = 2; // square of CLUSTER_RADIUS*2+1 is used to weight a point for being in a cluster. default 2
+const MATCHING_OPPOSITE_SLOPE_TOLERANCE = 1; // if the base pixels differ by this or less, use for opposite slopes. default 1
 
 // given a base map, for every pixel generate a "diff" map that expresses how different the pixel is from neighbors
 function generateDiffMap(arr) {
@@ -133,7 +134,7 @@ function computeMaxSlopeMap(base, posMap, negMap) {
 //   so then take the min of the two slopes and return that
 // do the same for negative slope from x,y and positive from ox,oy
 function findMatchingOppositeSlope(base, posMap, negMap, x, y, ox, oy) {
-    if(base[x][y] == base[ox][oy]) {
+    if(Math.abs(base[x][y] - base[ox][oy]) <= MATCHING_OPPOSITE_SLOPE_TOLERANCE) {
         var posNeg = 0;
         if(Math.abs(posMap[x][y] - negMap[ox][oy]) <= SLOPE_DIFF_TOLERANCE) {
             posNeg = Math.min(posMap[x][y], negMap[ox][oy]);
