@@ -106,6 +106,13 @@ function tap(x, y, timeInUs = 150000, finger = 1) {
     touchUp(finger, x, y);
 }
 
+// some buttons are occasionally "sticky" so we need to tap them twice
+function doubleTap(x, y, timeInUs = 150000, finger = 1, delayInUs = 50000) {
+    tap(x, y, timeInUs, finger);
+    usleep(delayInUs);
+    tap(x, y, timeInUs, finger);
+}
+
 function tapMiddle(region, time = 150000, finger = 1) {
     tap(region.x + region.width/2, region.y + region.height/2, time, finger);
 }
@@ -150,7 +157,7 @@ function debug(message) {
 
 module.exports = {
     // basic gestures
-    swipe, sleep, tap, tapMiddle,
+    swipe, sleep, tap, tapMiddle, doubleTap,
     // color & text recognition, polling
     readText, areColorsPresentInRegion, poll, findColorsInRegion,
     // debug
