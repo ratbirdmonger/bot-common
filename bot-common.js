@@ -155,7 +155,22 @@ function debug(message) {
     }
 }
 
+// autotouch is stupid and causes a respring if you 'require' a file that doesn't exist
+// this function first tests for existence, then imports the module
+function safeRequire(path) {
+    let fullPath = path + ".js";
+    const [exists, isDir] = fs.exists(fullPath)
+
+    if(!exists) {
+        alert(`${fullPath} not found`);
+        at.stop();
+    } else {
+        return require(fullPath);
+    }
+}
+
 module.exports = {
+    safeRequire,
     // basic gestures
     swipe, sleep, tap, tapMiddle, doubleTap,
     // color & text recognition, polling
