@@ -113,6 +113,13 @@ function doubleTap(x, y, timeInUs = 150000, finger = 1, delayInUs = 50000) {
     tap(x, y, timeInUs, finger);
 }
 
+// some buttons are occasionally "sticky" so we need to tap them twice
+function doubleTapMiddle(region, timeInUs = 150000, finger = 1, delayInUs = 50000) {
+    tap(region.x + region.width/2, region.y + region.height/2, timeInUs, finger);
+    usleep(delayInUs);
+    tap(region.x + region.width/2, region.y + region.height/2, timeInUs, finger);
+}
+
 function tapMiddle(region, time = 150000, finger = 1) {
     tap(region.x + region.width/2, region.y + region.height/2, time, finger);
 }
@@ -172,7 +179,7 @@ function safeRequire(path) {
 module.exports = {
     safeRequire,
     // basic gestures
-    swipe, sleep, tap, tapMiddle, doubleTap,
+    swipe, sleep, tap, tapMiddle, doubleTap, doubleTapMiddle,
     // color & text recognition, polling
     readText, areColorsPresentInRegion, poll, findColorsInRegion,
     // debug
